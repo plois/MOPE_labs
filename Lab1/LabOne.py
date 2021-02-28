@@ -37,7 +37,11 @@ tabl_rows.append(['dx']+dx)
 table = PrettyTable(th)
 for i in tabl_rows: table.add_row(i)
 
+print("Варіант 310")
 print(table)
-
 print("Yэт:", Yet)
-print("minY:", minY)
+print("minY:", minY, "\n")
+
+"""----------------------Варіант 327------------------------------"""
+Y_v2 = [(i- Yet)*(i- Yet) for i in y_list]
+print("Варіант 327\nmin((Y-Yэт)^2):", min(Y_v2))
