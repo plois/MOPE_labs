@@ -3,6 +3,7 @@ import numpy as np
 from random import *
 import math
 from functools import *
+import sys
 
 '''Варіант 310'''
 
@@ -22,6 +23,9 @@ naturalizedXtable = [[x1Min, x2Min], [x1Min, x2Max], [x1Max,  x2Min]]
 
 m = 5
 
+if(m==4):
+    print("m=4\nВведіть інше m")
+    sys.exit()
 
 def sigmaT(m):
     return math.sqrt(abs(2 * (2 * m - 2) / (m * (m - 4))))
