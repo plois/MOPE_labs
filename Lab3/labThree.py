@@ -3,6 +3,7 @@ import numpy as np
 from numpy.linalg import solve
 from scipy.stats import f, t
 from functools import partial
+import time
 
 
 class FractionalExperiment:
@@ -160,6 +161,14 @@ class FractionalExperiment:
         else:
             print('Математична модель не адекватна експериментальним даним')
 
+averageTime = []
 
-experiment = FractionalExperiment(7, 8)
-experiment.check()
+for i in range(0,100):
+    startTime = time.time()
+
+    experiment = FractionalExperiment(7, 8)
+    experiment.check()
+
+    averageTime.append(time.time() - startTime)
+
+print("\nСередній час виконання 1-ї ітерації:", sum(averageTime)/len(averageTime))
