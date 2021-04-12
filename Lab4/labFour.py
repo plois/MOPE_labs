@@ -269,32 +269,35 @@ while not flag:
             znach_koef.append(i)
         else:
             pass
-
-    d = len(znach_koef)
-    f4 = N - d
-    f3 = (m - 1) * N
-
-    deviation_of_adequacy = (m / (N - d)) * sum([(result_2[i] - Y_average[i]) ** 2 for i in range(N)])
-
-    Fp = deviation_of_adequacy / S2_beta_s
-
-    fisher = partial(f.ppf, q=1 - 0.05)
-    Ft = fisher(dfn=f4, dfd=f3)
-
-    print("Значення після критерія Стюдента:")
-    print("Y1 = {0:.3f};   Y2 = {1:.3f};   Y3 = {2:.3f};   Y4 = {3:.3f}.".format(result_2[0],
-                                                                                 result_2[1],
-                                                                                 result_2[2],
-                                                                                 result_2[3]))
-    print("Y1a = {0:.3f};   Y2a = {1:.3f};   Y3a = {2:.3f};   Y4a = {3:.3f}.".format(Y_average[0],
-                                                                                     Y_average[1],
-                                                                                     Y_average[2],
-                                                                                     Y_average[3]))
-
-    if Fp > Ft:
-        print('Fp = {} > Ft = {}'.format(round(Fp, 3), Ft))
-        print('Рівняння регресії неадекватно оригіналу при рівні значимості {}'.format(round(q, 2)))
+    if len(znach_koef)==1:
+        m+=1
     else:
-        print('Fp = {} < Ft = {}'.format(round(Fp, 3), Ft))
-        print('Рівняння регресії адекватно оригіналу при рівні значимості {}'.format(round(q, 2)))
-        flag = True
+
+        d = len(znach_koef)
+        f4 = N - d
+        f3 = (m - 1) * N
+
+        deviation_of_adequacy = (m / (N - d)) * sum([(result_2[i] - Y_average[i]) ** 2 for i in range(N)])
+
+        Fp = deviation_of_adequacy / S2_beta_s
+
+        fisher = partial(f.ppf, q=1 - 0.05)
+        Ft = fisher(dfn=f4, dfd=f3)
+
+        print("Значення після критерія Стюдента:")
+        print("Y1 = {0:.3f};   Y2 = {1:.3f};   Y3 = {2:.3f};   Y4 = {3:.3f}.".format(result_2[0],
+                                                                                     result_2[1],
+                                                                                     result_2[2],
+                                                                                     result_2[3]))
+        print("Y1a = {0:.3f};   Y2a = {1:.3f};   Y3a = {2:.3f};   Y4a = {3:.3f}.".format(Y_average[0],
+                                                                                         Y_average[1],
+                                                                                         Y_average[2],
+                                                                                         Y_average[3]))
+
+        if Fp > Ft:
+            print('Fp = {} > Ft = {}'.format(round(Fp, 3), Ft))
+            print('Рівняння регресії неадекватно оригіналу при рівні значимості {}'.format(round(q, 2)))
+        else:
+            print('Fp = {} < Ft = {}'.format(round(Fp, 3), Ft))
+            print('Рівняння регресії адекватно оригіналу при рівні значимості {}'.format(round(q, 2)))
+            flag = True
