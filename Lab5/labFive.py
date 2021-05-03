@@ -5,15 +5,18 @@ from scipy.stats import f, t
 from functools import partial
 from pyDOE2 import *
 
+
 def regression(x, b):
     y = sum([x[i] * b[i] for i in range(len(x))])
     return y
+
 
 x_range = ((0, 3), (-6, 3), (-4, 1))
 x_aver_max = sum([x[1] for x in x_range]) / 3
 x_aver_min = sum([x[0] for x in x_range]) / 3
 y_max = 200 + int(x_aver_max)
 y_min = 200 + int(x_aver_min)
+
 
 # квадратна дисперсія
 def s_kv(y, y_aver, n, m):
@@ -112,6 +115,7 @@ def find_coef(X, Y, norm=False):
     print('\nРезультат рівняння зі знайденими коефіцієнтами:\n', np.dot(X, B))
     return B
 
+
 def kriteriy_cochrana(y, y_aver, n, m):
     f1 = m - 1
     f2 = n
@@ -121,10 +125,12 @@ def kriteriy_cochrana(y, y_aver, n, m):
     print('\nПеревірка за критерієм Кохрена')
     return Gp
 
+
 def cohren(f1, f2, q=0.05):
     q1 = q / f1
     fisher_value = f.ppf(q=1 - q1, dfn=f2, dfd=(f1 - 1) * f2)
     return fisher_value / (fisher_value + f1 - 1)
+
 
 # оцінки коефіцієнтів
 def bs(x, y_aver, n):
@@ -134,6 +140,7 @@ def bs(x, y_aver, n):
         b = sum(j[0] * j[1] for j in zip(x[:, i], y_aver)) / n
         res.append(b)
     return res
+
 
 def kriteriy_studenta(x, y, y_aver, n, m):
     S_kv = s_kv(y, y_aver, n, m)
@@ -146,6 +153,7 @@ def kriteriy_studenta(x, y, y_aver, n, m):
 
     return ts
 
+
 def kriteriy_fishera(y, y_aver, y_new, n, m, d):
     S_ad = m / (n - d) * sum([(y_new[i] - y_aver[i]) ** 2 for i in range(len(y))])
     S_kv = s_kv(y, y_aver, n, m)
@@ -153,19 +161,21 @@ def kriteriy_fishera(y, y_aver, y_new, n, m, d):
 
     return S_ad / S_kv_aver
 
+
 def check(X, Y, B, n, m):
+    global t, x_range
     print('\n\tПеревірка рівняння:')
     f1 = m - 1
     f2 = n
     f3 = f1 * f2
     q = 0.05
 
-    ### табличні значення
+    #   табличні значення
     student = partial(t.ppf, q=1 - q)
     t_student = student(df=f3)
 
     G_kr = cohren(f1, f2)
-    ###
+    #
 
     y_aver = [round(sum(i) / len(i), 3) for i in Y]
     print('\nСереднє значення y:', y_aver)
@@ -176,7 +186,7 @@ def check(X, Y, B, n, m):
     Gp = kriteriy_cochrana(Y, y_aver, n, m)
     print(f'Gp = {Gp}')
     if Gp < G_kr:
-        print(f'З ймовірністю {1-q} дисперсії однорідні.')
+        print(f'З ймовірністю {1 - q} дисперсії однорідні.')
     else:
         print("Необхідно збільшити кількість дослідів")
         m += 1
@@ -214,6 +224,16 @@ def check(X, Y, B, n, m):
         print('Математична модель адекватна експериментальним даним')
     else:
         print('Математична модель не адекватна експериментальним даним')
+        
+        print("________________________________________________")
+        x_range = [list(1.7 * j for j in i) for i in x_range]
+        x_aver_max = sum([x[1] for x in x_range]) / 3
+        x_aver_min = sum([x[0] for x in x_range]) / 3
+        y_max = 200 + int(x_aver_max)
+        y_min = 200 + int(x_aver_min)
+
+        main(15, 7)
+
 
 def main(n, m):
     X5, Y5, X5_norm = plan_matrix5(n, m)
@@ -222,5 +242,7 @@ def main(n, m):
     B5 = find_coef(X5, y5_aver)
 
     check(X5_norm, Y5, B5, n, m)
+
+
 if __name__ == '__main__':
     main(15, 7)
