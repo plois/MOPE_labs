@@ -1,4 +1,5 @@
 from math import fabs, sqrt
+import time
 
 m = 2
 p = 0.95
@@ -257,5 +258,11 @@ def run_experiment():
     return adekvat
 
 
-if __name__ == '__main__':
+time_lst = []
+for i in range(0, 10):
+    time1 = time.time()
     run_experiment()
+    time_lst.append(time.time()-time1)
+
+
+print("Середній час обрахунку кожної статистичної перевірки:", sum(time_lst)/len(time_lst))
